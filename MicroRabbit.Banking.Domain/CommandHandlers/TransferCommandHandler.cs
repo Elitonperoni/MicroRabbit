@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using MicroRabbit.Domain.Core.Bus;
+using MicroRabbit.Banking.Domain.Events;
 
 namespace MicroRabbit.Banking.Domain.CommandHandlers
 {
@@ -20,6 +21,8 @@ namespace MicroRabbit.Banking.Domain.CommandHandlers
         public Task<bool> Handle(CreateTransferCommand request, CancellationToken cancellationToken)
         {
             //publish event to RabbitMQ
+            _bus.Publish(new TransferCreatedEvent(request.From, request.To, request.Amount));
+
             return Task.FromResult(true);
         }
     }
