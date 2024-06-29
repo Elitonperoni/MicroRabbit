@@ -1,6 +1,9 @@
 using MediatR;
+using MicroRabbit.Transfer.Domain.Events;
+using MicroRabbit.Domain.Core.Bus;
 using MicroRabbit.Infra.IoC;
 using MicroRabbit.Transfer.Data.Context;
+using MicroRabbit.Transfer.Domain.EventHandlers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +40,14 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+ConfigureEventBus(app);
+
+void ConfigureEventBus(IApplicationBuilder app)
+{
+    var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+    eventBus.Subscribe<TransferCreatedEvent, TransferEventHandler>();
+}
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -44,3 +55,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+

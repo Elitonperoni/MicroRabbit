@@ -44,7 +44,7 @@ namespace MicroRabbit.Infra.Bus
                 var body = Encoding.UTF8.GetBytes(message);
 
                 channel.BasicPublish("", eventName, null, body);
-            }
+            } 
         }   
 
         public void Subscribe<T, TH>()
